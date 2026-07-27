@@ -41,7 +41,7 @@
   1. Pagina `GET https://api.pokemontcg.io/v2/cards?q=set.id:sv3pt5&page=N&pageSize=250` até a
      página vir vazia.
   2. Mapeia `card["rarity"]` para uma das 7 pastas via uma tabela fixa (Common→01_comum,
-     Uncommon→02_incomum, Rare/Rare Holo→03_raras, Double Rare/Rare Ultra/Rare Holo EX/GX/V/VMAX→
+     Uncommon→02_incomum, Rare/Rare Holo→03_raras, Double Rare/Ultra Rare/Rare Holo EX/GX/V/VMAX→
      04_duplo_raras, Illustration Rare→05_arte_secreta, Special Illustration Rare/Rare Rainbow/Rare
      Secret→06_duplo_arte_secreta, Hyper Rare→07_legendaria). Raridades fora da tabela geram um
      aviso no stdout e são ignoradas (não quebram o download).

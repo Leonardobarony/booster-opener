@@ -56,13 +56,13 @@ quickstart.md.
 - [X] T006 [P] Escrever `tests/unit/download_cards_test.py` validando a idempotência (FR-016) com
       chamadas HTTP mockadas — duas execuções seguidas não devem re-baixar nem duplicar arquivos,
       conforme `contracts/download_cards-cli.md`
-- [ ] T007 ⚠️ **PENDENTE (ação do usuário)**: Executar `python tools/download_cards.py` para
-      popular `assets/` (imagens `.jpg` reais nas 7 pastas) e gerar `assets/cards.json` real —
-      não foi possível rodar neste ambiente (rede sandboxed sem acesso confiável a
-      `api.pokemontcg.io`, ver conversa). Em `assets/` há, por enquanto, um **catálogo placeholder**
-      de 32 cartas geradas localmente (mesmo formato do manifesto real) só para permitir
-      desenvolver/testar o restante do front-end. Rode `python tools/download_cards.py` na sua
-      máquina para substituir pelos dados reais antes de considerar o app pronto para uso.
+- [X] T007 Executado `python tools/download_cards.py`: `assets/` populado com as 207 cartas reais
+      do set 151 (66 comum, 62 incomum, 25 raras, 28 duplo raras, 16 arte secreta, 7 duplo arte
+      secreta, 3 legendária) e `assets/cards.json` gerado — 0 cartas ignoradas por raridade
+      desconhecida. Corrigido um bug de mapeamento no processo: a API retorna a raridade como
+      `"Ultra Rare"`, não `"Rare Ultra"` como no enunciado original — `RARITY_TO_FOLDER` em
+      `download_cards.py` (e a documentação em `plan.md`/`research.md`) foram corrigidos. Os
+      arquivos de imagem/manifesto reais não são commitados (ver `.gitignore`); o run ficou local.
 - [X] T008 [P] Implementar `src/catalog/catalog.js`: carregar e validar `assets/cards.json`
       (formato de `contracts/cards-manifest.schema.json`), expor `loadCatalog()` e
       `getByRarity(rarityFolder)` (ver `data-model.md` → Carta, Categoria de Raridade)

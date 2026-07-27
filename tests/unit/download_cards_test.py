@@ -115,3 +115,14 @@ def test_unknown_rarity_is_ignored_not_fatal(tmp_path, monkeypatch):
 
     manifest = json.loads((out_dir / "cards.json").read_text(encoding="utf-8"))
     assert len(manifest) == 2  # a carta de raridade desconhecida foi ignorada, não quebrou o run
+
+
+def test_rarity_mapping_matches_the_real_pokemontcg_io_strings():
+    # Regressão: a API retorna "Ultra Rare", não "Rare Ultra" como no enunciado original
+    # (confirmado ao rodar o script de verdade contra o set sv3pt5 — ver tasks.md T007).
+    assert download_cards.map_rarity("Ultra Rare") == "04_duplo_raras"
+    assert download_cards.map_rarity("Rare Ultra") is None
+    assert download_cards.map_rarity("Double Rare") == "04_duplo_raras"
+    assert download_cards.map_rarity("Illustration Rare") == "05_arte_secreta"
+    assert download_cards.map_rarity("Special Illustration Rare") == "06_duplo_arte_secreta"
+    assert download_cards.map_rarity("Hyper Rare") == "07_legendaria"

@@ -95,7 +95,7 @@ assets/
 ├── 01_comum/                    # cartas Common (.jpg)
 ├── 02_incomum/                  # cartas Uncommon (.jpg)
 ├── 03_raras/                    # cartas Rare, Rare Holo (.jpg)
-├── 04_duplo_raras/              # cartas Double Rare, Rare Ultra, Rare Holo EX/GX/V/VMAX (.jpg)
+├── 04_duplo_raras/              # cartas Double Rare, Ultra Rare, Rare Holo EX/GX/V/VMAX (.jpg)
 ├── 05_arte_secreta/             # cartas Illustration Rare (.jpg)
 ├── 06_duplo_arte_secreta/       # cartas Special Illustration Rare, Rare Rainbow, Rare Secret (.jpg)
 └── 07_legendaria/                # cartas Hyper Rare (.jpg)

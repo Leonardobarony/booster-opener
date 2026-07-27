@@ -24,7 +24,7 @@ RARITY_TO_FOLDER = {
     "Rare": "03_raras",
     "Rare Holo": "03_raras",
     "Double Rare": "04_duplo_raras",
-    "Rare Ultra": "04_duplo_raras",
+    "Ultra Rare": "04_duplo_raras",
     "Rare Holo EX": "04_duplo_raras",
     "Rare Holo GX": "04_duplo_raras",
     "Rare Holo V": "04_duplo_raras",
@@ -57,7 +57,9 @@ def image_url_for(card):
     return images.get("large") or images.get("small")
 
 
-def _get_with_retry(session, url, params=None, headers=None, retries=3, backoff=1.5):
+def _get_with_retry(session, url, params=None, headers=None, retries=6, backoff=2.0):
+    # A API pública (sem --api-key) é conhecida por retornar 500 intermitentes sob
+    # carga; retries generosos com backoff crescente absorvem essa instabilidade.
     last_error = None
     for attempt in range(retries):
         try:
@@ -67,7 +69,7 @@ def _get_with_retry(session, url, params=None, headers=None, retries=3, backoff=
         except requests.RequestException as exc:  # pragma: no cover - exercised via retries
             last_error = exc
             if attempt < retries - 1:
-                time.sleep(backoff**attempt)
+                time.sleep(min(backoff**attempt, 20))
     raise RuntimeError(f"Falha ao acessar {url}: {last_error}")
 
 
