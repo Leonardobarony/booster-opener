@@ -21,7 +21,7 @@ estatisticamente a distribuição (SC-002) conforme o Princípio III da constitu
 
 **Language/Version**: JavaScript (ES2022, ES modules nativos) para o runtime do navegador; Python 3.11+ apenas para o script de preparação de dados (`tools/download_cards.py`), executado uma única vez em tempo de desenvolvimento/build, nunca servido nem executado em produção.
 
-**Primary Dependencies**: Nenhuma dependência de runtime no navegador (HTML5 + CSS3 + JS puro, sem framework). No script Python: apenas a biblioteca `requests` (cliente HTTP para a API pokemontcg.io).
+**Primary Dependencies**: Nenhuma dependência de runtime no navegador (HTML5 + CSS3 + JS puro, sem framework). No script Python: `requests` (cliente HTTP para a API pokemontcg.io) e `Pillow` (decodifica as imagens PNG retornadas pela API e as re-codifica como JPEG de verdade antes de salvar como `.jpg` — ver research.md §3).
 
 **Storage**: `localStorage` do navegador para a coleção do jogador (cartas obtidas + contagem de cópias). Um manifesto estático `assets/cards.json` (gerado pelo `download_cards.py`) descreve o catálogo completo de cartas (id, nome, raridade, caminho da imagem) — é o que permite ao front-end conhecer o total de cartas por raridade (necessário para FR-019 e FR-021) sem depender de nenhum serviço em tempo de execução.
 

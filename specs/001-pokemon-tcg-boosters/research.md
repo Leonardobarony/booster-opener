@@ -47,7 +47,9 @@
      aviso no stdout e são ignoradas (não quebram o download).
   3. Para cada carta, calcula o caminho de destino `assets/<pasta>/<card_id>.jpg` **antes** de
      baixar; se o arquivo já existe, pula o download (idempotência, FR-016).
-  4. Baixa `card["images"]["large"]` (fallback para `["small"]`) e salva como `.jpg`.
+  4. Baixa `card["images"]["large"]` (fallback para `["small"]`), decodifica os bytes com
+     **Pillow** e re-salva como um JPEG de verdade (achatando qualquer canal alpha sobre fundo
+     branco antes de converter) em `assets/<pasta>/<card_id>.jpg`.
   5. Ao final, escreve/atualiza `assets/cards.json`: lista de `{id, name, rarity_folder,
      image_path}` — esse manifesto é o que o front-end lê em tempo de execução (nunca chama a API
      diretamente, mantendo o Princípio I).
@@ -55,10 +57,15 @@
   ao jogo permanecer 100% front-end/offline (Princípio I) enquanto ainda usa uma fonte de dados
   real. A checagem de existência do arquivo antes do download implementa a idempotência decidida
   em `/speckit-clarify` sem precisar de nenhum estado externo (usa o próprio disco como fonte de
-  verdade).
+  verdade). A conversão via Pillow existe porque `images.pokemontcg.io` só serve PNG — gravar
+  esses bytes direto com extensão `.jpg` (sem converter) fazia o servidor anunciar
+  `Content-Type: image/jpeg` para um arquivo que na verdade era PNG, o que quebrou o carregamento
+  de ao menos uma carta em teste real de navegador (ver `tasks.md` T005 e o teste de regressão em
+  `download_cards_test.py`).
 - **Alternatives considered**: Buscar a API diretamente do navegador em runtime — rejeitado
   porque violaria o Princípio I (dependência de serviço externo em produção) e o requisito de
-  funcionamento offline.
+  funcionamento offline. Salvar os bytes crus com extensão `.jpg` sem conversão — rejeitado após o
+  bug real descrito acima; viola literalmente "cada carta salva como .jpg" do enunciado original.
 
 ## 4. Formato do manifesto `assets/cards.json`
 

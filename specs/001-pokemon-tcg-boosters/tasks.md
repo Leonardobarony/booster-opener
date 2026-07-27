@@ -52,7 +52,10 @@ quickstart.md.
 - [X] T005 Implementar `tools/download_cards.py` conforme
       `contracts/download_cards-cli.md` (paginação de `set.id:sv3pt5`, tabela de mapeamento de
       raridade → 7 pastas, checagem de existência de arquivo antes do download, escrita atômica,
-      geração de `assets/cards.json`, códigos de saída 0/1)
+      geração de `assets/cards.json`, códigos de saída 0/1). **Atualizado**: as imagens da API são
+      PNG; o script usa Pillow para decodificá-las e re-salvá-las como JPEG de verdade (não apenas
+      bytes crus com extensão trocada) — ver `research.md` §3 e o teste de regressão
+      `test_download_is_idempotent`/formato JPEG em `download_cards_test.py`
 - [X] T006 [P] Escrever `tests/unit/download_cards_test.py` validando a idempotência (FR-016) com
       chamadas HTTP mockadas — duas execuções seguidas não devem re-baixar nem duplicar arquivos,
       conforme `contracts/download_cards-cli.md`
