@@ -6,6 +6,7 @@ jogador) — ver contracts/download_cards-cli.md e research.md (secão 3) em
 specs/001-pokemon-tcg-boosters/.
 """
 import argparse
+import io
 import json
 import os
 import sys
@@ -13,6 +14,7 @@ import time
 from pathlib import Path
 
 import requests
+from PIL import Image
 
 API_BASE = "https://api.pokemontcg.io/v2/cards"
 SET_QUERY = "set.id:sv3pt5"
@@ -90,10 +92,27 @@ def fetch_all_cards(session, api_key=None):
 
 
 def download_image(session, url, dest_path):
-    """Baixa `url` para `dest_path` de forma atômica (arquivo temporário + rename)."""
+    """Baixa `url` e salva em `dest_path` como um `.jpg` de verdade (não apenas a extensão).
+
+    As imagens de `images.pokemontcg.io` são PNG (frequentemente com canal alpha);
+    a FR original exige "cada carta salva como .jpg", então convertemos de fato o
+    formato aqui em vez de apenas gravar os bytes crus com extensão trocada — do
+    contrário o navegador recebe um PNG anunciado como `image/jpeg` e pode falhar
+    ao renderizar (bug real observado em produção nesta feature).
+    """
     response = _get_with_retry(session, url)
+    image = Image.open(io.BytesIO(response.content))
+    if image.mode in ("RGBA", "LA", "P"):
+        # JPEG não suporta transparência: compõe sobre um fundo branco antes de converter.
+        rgba = image.convert("RGBA")
+        flattened = Image.new("RGB", rgba.size, (255, 255, 255))
+        flattened.paste(rgba, mask=rgba.split()[-1])
+        image = flattened
+    else:
+        image = image.convert("RGB")
+
     tmp_path = dest_path.with_suffix(dest_path.suffix + ".tmp")
-    tmp_path.write_bytes(response.content)
+    image.save(tmp_path, format="JPEG", quality=90)
     os.replace(tmp_path, dest_path)
 
 

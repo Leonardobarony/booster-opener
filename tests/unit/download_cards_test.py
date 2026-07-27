@@ -3,13 +3,23 @@
 A API pokemontcg.io é mockada — estes testes nunca fazem chamadas de rede reais.
 Ver specs/001-pokemon-tcg-boosters/contracts/download_cards-cli.md.
 """
+import io
 import json
 import sys
 from pathlib import Path
 from unittest.mock import MagicMock
 
+from PIL import Image
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools"))
 import download_cards  # noqa: E402
+
+
+def _fake_png_bytes(size=(10, 14), color=(200, 50, 50, 128)):
+    """PNG real com canal alpha — mesmo formato que a API pokemontcg.io retorna de verdade."""
+    buffer = io.BytesIO()
+    Image.new("RGBA", size, color).save(buffer, format="PNG")
+    return buffer.getvalue()
 
 
 FAKE_CARDS_PAGE_1 = [
@@ -32,9 +42,9 @@ FAKE_CARDS_PAGE_1 = [
 
 
 class FakeResponse:
-    def __init__(self, json_data=None, content=b"fake-image-bytes"):
+    def __init__(self, json_data=None, content=None):
         self._json_data = json_data
-        self.content = content
+        self.content = content if content is not None else _fake_png_bytes()
 
     def raise_for_status(self):
         return None
@@ -49,8 +59,8 @@ def _fake_get_factory(cards_page_1):
             if params["page"] == 1:
                 return FakeResponse(json_data={"data": cards_page_1})
             return FakeResponse(json_data={"data": []})
-        # Chamada de download de imagem de carta.
-        return FakeResponse(content=b"fake-image-bytes")
+        # Chamada de download de imagem de carta: a API real retorna PNG.
+        return FakeResponse(content=_fake_png_bytes())
 
     return fake_get
 
@@ -79,6 +89,11 @@ def test_download_is_idempotent(tmp_path, monkeypatch):
     uncommon_jpg = out_dir / "02_incomum" / "sv3pt5-2.jpg"
     assert common_jpg.exists()
     assert uncommon_jpg.exists()
+
+    # Regressão: a API só oferece PNG; o arquivo salvo como .jpg precisa ser um JPEG de
+    # verdade (não bytes de PNG só renomeados), senão o navegador pode falhar ao exibi-lo.
+    with Image.open(common_jpg) as saved_image:
+        assert saved_image.format == "JPEG"
 
     mtime_before = common_jpg.stat().st_mtime_ns
 
