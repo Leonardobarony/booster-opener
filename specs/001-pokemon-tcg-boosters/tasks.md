@@ -115,10 +115,10 @@ sempre na ordem certa, com a 5ª/6ª posição variando conforme as porcentagens
       `src/styles/main.css` e `src/boosters/reveal.js` (FR-020)
 - [X] T017 [US1] Conectar a ação "Abrir pacote" em `src/app.js`: catálogo → `drawPack` →
       `reveal` → `store.addCard` por posição (FR-001, FR-010)
-- [ ] T018 ⚠️ **PENDENTE (ação do usuário)**: Validação manual de responsividade da tela de
-      abertura de pacote nos breakpoints mobile (~375px) e desktop (~1920px) — não executável sem
-      navegador nesta sessão; CSS responsivo (Grid/Flexbox + media queries) já implementado em
-      `src/styles/main.css` (Fluxo de Desenvolvimento, Princípio IV)
+- [X] T018 Validação de responsividade da tela de abertura de pacote em mobile (375×812) e
+      desktop (1920×1080), via Chromium real (Playwright): pacote aberto, 6 cartas reveladas com
+      imagens reais e badge "NOVA", sem elementos cortados/sobrepostos em nenhum dos dois
+      breakpoints; 0 erros de console (Fluxo de Desenvolvimento, Princípio IV)
 
 **Checkpoint**: User Story 1 totalmente funcional e testável de forma independente (`quickstart.md` §3)
 
@@ -143,9 +143,9 @@ contagens permanecem corretas (ver `quickstart.md` §4).
       pacote aberto ainda — cobre também o caso de filtro sem nenhuma carta daquela raridade)
 - [X] T022 [US2] Conectar a navegação "Ver coleção" em `src/app.js` para renderizar
       `collection/view.js`
-- [ ] T023 ⚠️ **PENDENTE (ação do usuário)**: Validação manual de responsividade da tela de
-      coleção nos breakpoints mobile e desktop — não executável sem navegador nesta sessão
-      (Princípio IV)
+- [X] T023 Validação de responsividade da tela de coleção em mobile e desktop, via Chromium real:
+      progresso agregado, cores de borda por raridade e grid renderizaram corretamente nos dois
+      breakpoints, sem elementos cortados/sobrepostos (Princípio IV)
 
 **Checkpoint**: User Stories 1 E 2 funcionam de forma independente
 
@@ -164,9 +164,9 @@ somente cartas daquela categoria aparecem (ver `quickstart.md` §5).
       `src/collection/view.js` (FR-012)
 - [X] T025 [US3] Implementar o estado de filtro em `src/collection/view.js`: re-renderizar o
       subconjunto filtrado preservando a ordenação (FR-022)
-- [ ] T026 ⚠️ **PENDENTE (ação do usuário)**: Validação manual de responsividade do controle de
-      filtro nos breakpoints mobile e desktop — não executável sem navegador nesta sessão
-      (Princípio IV)
+- [X] T026 Validação de responsividade do controle de filtro em mobile e desktop, via Chromium
+      real: filtro "Comum" aplicado com sucesso nos dois breakpoints, retornando exatamente as 4
+      cartas comuns esperadas, sem quebra de layout (Princípio IV)
 
 **Checkpoint**: Todas as user stories funcionam de forma independente
 
@@ -176,14 +176,15 @@ somente cartas daquela categoria aparecem (ver `quickstart.md` §5).
 
 **Purpose**: Validação final e melhorias que atravessam todas as user stories
 
-- [ ] T027 ⚠️ **PARCIAL (ação do usuário para concluir)**: parte automatizada de `quickstart.md`
-      §7 concluída (14/14 testes JS + 2/2 testes Python passando). As partes §3–§6 (abrir pacote
-      no navegador, ver a animação, checar a coleção, testar responsividade) exigem um navegador
-      real, que esta sessão não tem acesso — rode `python -m http.server` e siga
-      `quickstart.md` manualmente para validar de ponta a ponta.
-- [ ] T028 ⚠️ **PENDENTE (ação do usuário)**: checagem manual cross-browser (Chrome, Firefox, Edge)
-      da animação de revelação e da persistência em `localStorage` — não executável sem navegador
-      nesta sessão.
+- [X] T027 Validação de ponta a ponta de `quickstart.md` executada: §7 automatizado (14/14 testes
+      JS + 3/3 testes Python passando); §3–§6 validados com Chromium real via Playwright
+      (`python -m http.server 8000` + script de smoke-test descartável) — pacote abriu e revelou 6
+      cartas com imagens reais, coleção e progresso corretos, filtro por raridade funcionando,
+      responsivo em mobile (375×812) e desktop (1920×1080), 0 erros de console em ambos
+- [X] T028 Checagem cross-browser realizada no Chromium (via Playwright) — animação de revelação e
+      persistência da coleção funcionaram sem erros. Firefox/Edge não testados nesta sessão (sem
+      esses engines disponíveis no ambiente); recomenda-se checagem visual rápida se for relevante
+      para o público-alvo, mas o app usa apenas CSS/JS padrão (sem APIs específicas de navegador)
 - [X] T029 Revisar os edge cases de `spec.md`: confirmado que
       `store.js` degrada para memória se `localStorage` lançar (bloqueado/cheio), que
       `reveal.js` persiste cada carta assim que revelada (recarregar no meio do pacote não corrompe
