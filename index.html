@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abertura de Boosters — Pokémon TCG 151</title>
+    <link rel="stylesheet" href="src/styles/main.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1 class="app-title">Boosters Pokémon TCG</h1>
+      <nav class="app-nav">
+        <button type="button" id="nav-pack" class="nav-button" aria-pressed="true">
+          Abrir pacote
+        </button>
+        <button type="button" id="nav-collection" class="nav-button" aria-pressed="false">
+          Coleção
+        </button>
+      </nav>
+    </header>
+
+    <main id="app-main">
+      <section id="view-pack" class="view">
+        <div class="pack-intro">
+          <button type="button" id="open-pack-button" class="primary-button">
+            Abrir pacote
+          </button>
+          <p id="pack-hint" class="hint-text">
+            Cada pacote tem 6 cartas únicas, reveladas da menos rara para a mais rara.
+          </p>
+        </div>
+        <div id="pack-reveal" class="pack-reveal" aria-live="polite"></div>
+      </section>
+
+      <section id="view-collection" class="view" hidden>
+        <div id="collection-progress" class="collection-progress"></div>
+        <div id="collection-filters" class="collection-filters" role="group" aria-label="Filtrar por raridade"></div>
+        <div id="collection-empty" class="empty-state" hidden>
+          Nenhuma carta obtida ainda. Abra um pacote para começar sua coleção!
+        </div>
+        <div id="collection-grid" class="collection-grid"></div>
+      </section>
+
+      <div id="loading-state" class="loading-state" hidden>Carregando catálogo…</div>
+      <div id="error-state" class="error-state" hidden></div>
+    </main>
+
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Cards Manifest",
+  "description": "Contrato do arquivo assets/cards.json gerado por tools/download_cards.py e consumido por src/catalog/catalog.js. Este é o único ponto de acoplamento entre o script Python e o front-end.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "name", "rarityFolder", "imagePath"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Identificador único da carta na fonte original (ex.: 'sv3pt5-1'). Chave primária do catálogo."
+      },
+      "name": {
+        "type": "string",
+        "description": "Nome de exibição da carta, usado na ordenação alfabética dentro da mesma raridade (FR-022)."
+      },
+      "rarityFolder": {
+        "type": "string",
+        "enum": [
+          "01_comum",
+          "02_incomum",
+          "03_raras",
+          "04_duplo_raras",
+          "05_arte_secreta",
+          "06_duplo_arte_secreta",
+          "07_legendaria"
+        ],
+        "description": "Uma das 7 categorias de raridade (FR-003)."
+      },
+      "imagePath": {
+        "type": "string",
+        "pattern": "^assets/(01_comum|02_incomum|03_raras|04_duplo_raras|05_arte_secreta|06_duplo_arte_secreta|07_legendaria)/.+\\.jpg$",
+        "description": "Caminho relativo do arquivo .jpg a partir da raiz do site."
+      }
+    }
+  }
+}

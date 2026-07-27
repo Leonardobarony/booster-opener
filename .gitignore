@@ -1,0 +1,22 @@
+# Python (tools/download_cards.py dev tooling)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node (dev-only test tooling, no runtime dependency)
+node_modules/
+
+# Assets gerados/baixados por tools/download_cards.py (dados da API, não versionados).
+# As pastas em si (com .gitkeep) permanecem rastreadas; o catálogo placeholder gerado
+# localmente também não é versionado — rode download_cards.py para popular assets/.
+assets/*/*.jpg
+assets/cards.json
+
+# OS/editor
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/

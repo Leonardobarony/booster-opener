@@ -1,0 +1,282 @@
+/* Layout responsivo: mobile-first, breakpoints em ~480px e ~1024px (Princípio IV). */
+
+:root {
+  color-scheme: light dark;
+  --color-bg: #14141c;
+  --color-surface: #1f1f2b;
+  --color-text: #f2f2f7;
+  --color-muted: #9a9ab0;
+  --color-accent: #f5c542;
+  --color-new: #4ade80;
+
+  --rarity-01_comum: #b9b9c6;
+  --rarity-02_incomum: #67c98f;
+  --rarity-03_raras: #6fa8e0;
+  --rarity-04_duplo_raras: #b083e0;
+  --rarity-05_arte_secreta: #e0b45a;
+  --rarity-06_duplo_arte_secreta: #e07fc0;
+  --rarity-07_legendaria: #e05a5a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.app-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.app-nav {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-button,
+.primary-button,
+.filter-button {
+  font: inherit;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.nav-button[aria-pressed="true"],
+.filter-button[aria-pressed="true"] {
+  background: var(--color-accent);
+  color: #201a00;
+  border-color: var(--color-accent);
+}
+
+.primary-button {
+  background: var(--color-accent);
+  color: #201a00;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.85rem 1.5rem;
+}
+
+#app-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.view[hidden] {
+  display: none;
+}
+
+.pack-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.hint-text {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  max-width: 32rem;
+}
+
+/* Revelação do pacote: Flexbox, quebra de linha em telas pequenas */
+.pack-reveal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.pack-card {
+  width: 140px;
+  perspective: 800px;
+}
+
+.pack-card-inner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.pack-card.is-revealed .pack-card-inner {
+  transform: rotateY(180deg);
+}
+
+.pack-card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.pack-card-face.back {
+  background: linear-gradient(135deg, #2a2a3d, #14141c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.pack-card-face.front {
+  transform: rotateY(180deg);
+  background: var(--color-surface);
+}
+
+.pack-card-face.front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pack-card-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--color-new);
+  color: #052e14;
+  text-transform: uppercase;
+}
+
+.pack-card-name {
+  margin-top: 0.4rem;
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+/* Coleção */
+.collection-progress {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+}
+
+.progress-pill {
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.collection-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state,
+.loading-state,
+.error-state {
+  text-align: center;
+  color: var(--color-muted);
+  padding: 2rem 1rem;
+}
+
+.error-state {
+  color: #ff8080;
+}
+
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+.collection-card {
+  background: var(--color-surface);
+  border-radius: 10px;
+  padding: 0.5rem;
+  text-align: center;
+  border: 2px solid transparent;
+}
+
+.collection-card img {
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+
+.collection-card .copies {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+
+.collection-card .card-name {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+/* Cor de destaque por raridade (borda esquerda da pill / carta) */
+.rarity-01_comum { border-color: var(--rarity-01_comum); }
+.rarity-02_incomum { border-color: var(--rarity-02_incomum); }
+.rarity-03_raras { border-color: var(--rarity-03_raras); }
+.rarity-04_duplo_raras { border-color: var(--rarity-04_duplo_raras); }
+.rarity-05_arte_secreta { border-color: var(--rarity-05_arte_secreta); }
+.rarity-06_duplo_arte_secreta { border-color: var(--rarity-06_duplo_arte_secreta); }
+.rarity-07_legendaria { border-color: var(--rarity-07_legendaria); }
+
+/* Breakpoint mobile-large / tablet */
+@media (min-width: 480px) {
+  .app-header {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .pack-card {
+    width: 160px;
+  }
+}
+
+/* Breakpoint desktop */
+@media (min-width: 1024px) {
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .pack-card {
+    width: 180px;
+  }
+
+  .collection-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
